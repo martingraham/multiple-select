@@ -385,6 +385,18 @@
                 that.updateSelectAll();
                 that.update();
                 that.updateOptGroupSelect();
+				
+				
+                if (that.options.single) {
+                    var clickedVal = $(this).val();
+                    that.$selectItems.filter(function() {
+                        return $(this).val() !== clickedVal;
+                    }).each(function() {
+                        $(this).prop('checked', false);
+                    });
+                    that.update();
+                }
+				
                 that.options.onClick({
                     label: $(this).parent().text(),
                     value: $(this).val(),
@@ -394,16 +406,6 @@
 
                 if (that.options.single && that.options.isOpen && !that.options.keepOpen) {
                     that.close();
-                }
-
-                if (that.options.single) {
-                    var clickedVal = $(this).val();
-                    that.$selectItems.filter(function() {
-                        return $(this).val() !== clickedVal;
-                    }).each(function() {
-                        $(this).prop('checked', false);
-                    });
-                    that.update();
                 }
             });
         },
@@ -631,12 +633,6 @@
         refresh: function () {
             this.init();
         },
-		
-        destroy: function () {
-            this.$el.show();
-            this.$parent.remove();
-            this.$el.data('multipleSelect', null);
-        },
 
         filter: function () {
             var that = this,
@@ -687,7 +683,7 @@
                 'open', 'close',
                 'checkAll', 'uncheckAll',
                 'focus', 'blur',
-                'refresh', 'destroy'
+                'refresh', 'close'
             ];
 
         this.each(function () {
